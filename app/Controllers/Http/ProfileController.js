@@ -1,10 +1,14 @@
 'use strict'
 
 class FavoriteController {
-  async store () {
+  async show () {
   }
 
-  async destroy () {
+  async follow () {
+  }
+
+  async unfollow () {
+
   }
 }
 
