@@ -1,17 +1,17 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# Node modules
+node_modules
 
-# dependencies
-/node_modules
-/bower_components
+# Adonis directory for storing tmp files
+tmp
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-*.launch
-.settings/
+# Environment variables, never commit this file
+.env
 
+# Lock files
+package-lock.json
+yarn.lock
 
-#System Files
-.DS_Store
-Thumbs.db
+# The development sqlite file
+database/development.sqlite
+
+.idea
