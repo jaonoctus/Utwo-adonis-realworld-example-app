@@ -11,7 +11,8 @@ class UserSchema extends Schema {
       table.string('password', 60).notNullable()
       table.string('bio')
       table.string('image', 2048)
-      table.timestamps()
+      table.timestamp('createdAt').defaultTo(this.fn.now())
+      table.timestamp('updatedAt').defaultTo(this.fn.now())
     })
   }
 

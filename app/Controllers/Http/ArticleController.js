@@ -4,30 +4,48 @@ const Article = use('App/Models/Article')
 const Tag = use('App/Models/Tag')
 
 class ArticleController {
-  async index () {
-    const article = await Article.all()
-    return {article}
+  async index() {
+    const articles = await Article.query().paginate()
+    const resp = articles.toJSON()
+    resp.articles = resp.data
+    resp.articlesCount = resp.total
+    delete resp.data
+    delete resp.total
+    return resp
   }
 
-  async store ({request, auth}) {
+  async store({ request, auth }) {
     const articleData = request.only('article').article
     const tagList = articleData.tagList
-    let tags = tagList.map(item => {
-      return {name: item}
+    const tags = await this.createTagIfNotExist(tagList)
+    const tagsId = tags.map(item => {
+      return item.id
     })
-    // tags = await Tag.createMany(tags)
     delete articleData.tagList
+    articleData.user_id = auth.user.id
     const article = await Article.create(articleData)
-    return {article}
+    await article.tagList().attach(tagsId)
+    await article.load('author')
+    // await article.load('favorited')
+    article.tagList = tags
+    return { article: article.toJSON() }
   }
 
-  async update () {
+  async createTagIfNotExist(tagList) {
+    const tags = []
+    for (const tag of tagList) {
+      tags.push(await Tag.findOrCreate({ name: tag }, { name: tag }))
+    }
+    return tags
   }
 
-  async destroy () {
+  async update() {
   }
 
-  async feed () {
+  async destroy() {
+  }
+
+  async feed() {
   }
 }
 

@@ -1,14 +1,14 @@
 'use strict'
 
-const Model = use('Model')
+const BaseModel = use('App/Models/BaseModel')
 
-class Comment extends Model {
+class Comment extends BaseModel {
 
-  article () {
+  article() {
     return this.belongsTo('App/Models/Article')
   }
 
-  user () {
+  author() {
     return this.belongsTo('App/Models/User')
   }
 }

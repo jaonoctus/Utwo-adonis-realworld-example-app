@@ -3,10 +3,10 @@
 const User = use('App/Models/User')
 
 class FavoriteController {
-  async index({ request, auth }) {
+  async index({ auth }) {
     const user = await auth.getUser()
     user.token = await auth.generate(user)
-    return { user }
+    return { user: user.toJSON() }
   }
 
   async update({ request, auth }) {
@@ -15,7 +15,7 @@ class FavoriteController {
     user.email = email
     await user.save()
     user.token = auth.generate(user)
-    return { user }
+    return { user: user.toJSON() }
   }
 }
 

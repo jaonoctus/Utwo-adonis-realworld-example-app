@@ -8,7 +8,8 @@ class FollowsSchema extends Schema {
       table.primary(['follower_id', 'followed_id'])
       table.integer('follower_id').unsigned()
       table.integer('followed_id').unsigned()
-      table.timestamps()
+      table.timestamp('createdAt').defaultTo(this.fn.now())
+      table.timestamp('updatedAt').defaultTo(this.fn.now())
 
       table.foreign('follower_id')
         .references('users.id')

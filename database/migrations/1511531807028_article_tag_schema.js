@@ -4,7 +4,7 @@ const Schema = use('Schema')
 
 class ArticleTagSchema extends Schema {
   up () {
-    this.create('article_tags', (table) => {
+    this.create('article_tag', (table) => {
       table.primary(['article_id', 'tag_id'])
       table.integer('article_id').unsigned()
       table.integer('tag_id').unsigned()
@@ -20,7 +20,7 @@ class ArticleTagSchema extends Schema {
   }
 
   down () {
-    this.dropTableIfExists('article_tags')
+    this.dropTableIfExists('article_tag')
   }
 }
 

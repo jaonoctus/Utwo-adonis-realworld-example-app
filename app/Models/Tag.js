@@ -8,6 +8,14 @@ class Tag extends Model {
     return []
   }
 
+  static get createdAtColumn() {
+    return ''
+  }
+
+  static get updatedAtColumn() {
+    return ''
+  }
+
   articles () {
     return this.hasMany('App/Models/Article')
   }

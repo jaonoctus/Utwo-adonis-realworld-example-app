@@ -8,7 +8,8 @@ class FavoriteSchema extends Schema {
       table.primary(['user_id', 'article_id'])
       table.integer('user_id').unsigned()
       table.integer('article_id').unsigned()
-      table.timestamps()
+      table.timestamp('createdAt').defaultTo(this.fn.now())
+      table.timestamp('updatedAt').defaultTo(this.fn.now())
 
       table.foreign('user_id')
         .references('users.id')

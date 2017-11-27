@@ -1,9 +1,9 @@
 'use strict'
 
-const Model = use('Model')
+const BaseModel = use('App/Models/BaseModel')
 
-class User extends Model {
-  static boot () {
+class User extends BaseModel {
+  static boot() {
     super.boot()
 
     /**
@@ -16,17 +16,21 @@ class User extends Model {
     this.addHook('beforeCreate', 'User.hashPassword')
   }
 
-  static get hidden () {
+  static get hidden() {
     return ['password']
   }
 
-  comments ()
-  {
+  comments() {
     return this.hasMany('App/Models/Comment')
   }
 
-  favorite () {
+  favorite() {
     return this.belongsToMany('App/Models/Article')
+  }
+
+  following() {
+    return this.belongsToMany('App/Models/User', 'follower_id', 'followed_id')
+      .pivotTable('follows')
   }
 
 }

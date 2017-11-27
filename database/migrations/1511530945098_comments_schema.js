@@ -6,10 +6,11 @@ class CommentsSchema extends Schema {
   up () {
     this.create('comments', (table) => {
       table.increments()
-      table.integer('user_id').unsigned()
-      table.integer('article_id').unsigned()
+      table.integer('user_id').unsigned().notNullable()
+      table.integer('article_id').unsigned().notNullable()
       table.text('body').notNullable()
-      table.timestamps()
+      table.timestamp('createdAt').defaultTo(this.fn.now())
+      table.timestamp('updatedAt').defaultTo(this.fn.now())
 
       table.foreign('user_id')
         .references('users.id')

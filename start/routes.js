@@ -38,7 +38,7 @@ Route.group(() => {
 
   Route.get('profiles/:user', 'ProfileController.show')
   Route.post('profiles/:user/follow', 'ProfileController.follow')
-  Route.delete('profiles/:user/follow', 'ProfileController.unFollow')
+  Route.delete('profiles/:user/follow', 'ProfileController.unfollow')
 
   Route.get('articles/:article/comments', 'CommentController.index')
   Route.post('articles/:article/comments', 'CommentController.store')
