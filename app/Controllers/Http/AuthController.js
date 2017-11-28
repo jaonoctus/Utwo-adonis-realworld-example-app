@@ -2,7 +2,7 @@
 
 const User = use('App/Models/User')
 
-class FollowController {
+class AuthController {
   async login ({ request, auth }) {
     const { email, password } = request.all().user
     const token = await auth.attempt(email, password)
@@ -21,4 +21,4 @@ class FollowController {
   }
 }
 
-module.exports = FollowController
+module.exports = AuthController

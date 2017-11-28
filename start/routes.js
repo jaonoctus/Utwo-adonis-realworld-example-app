@@ -17,7 +17,7 @@ const Route = use('Route')
 
 
 Route.post('users/login', 'AuthController.login')
-Route.post('users', 'AuthController.register')
+Route.post('users', 'AuthController.register').validator('StoreUser')
 
 Route.get('articles', 'ArticleController.index')
 
@@ -25,22 +25,24 @@ Route.get('tags', 'TagController.index')
 
 Route.group(() => {
 
-  Route.post('articles', 'ArticleController.store')
-  Route.put('articles/:article', 'ArticleController.update')
-  Route.delete('articles/:article', 'ArticleController.destroy')
-
   Route.get('articles/feed', 'ArticleController.feed')
-  Route.post('articles/:article/favorite', 'FavoriteController.store')
-  Route.delete('articles/:article/favorite', 'FavoriteController.destroy')
+  Route.post('articles', 'ArticleController.store').validator('StoreArticle')
+  Route.put('articles/:slug', 'ArticleController.update')
+  Route.delete('articles/:slug', 'ArticleController.destroy')
+
+  Route.post('articles/:slug/favorite', 'FavoriteController.store')
+  Route.delete('articles/:slug/favorite', 'FavoriteController.destroy')
 
   Route.get('user', 'UserController.index')
-  Route.put('user', 'UserController.update')
+  Route.put('user', 'UserController.update').validator('UpdateUser')
 
   Route.get('profiles/:user', 'ProfileController.show')
   Route.post('profiles/:user/follow', 'ProfileController.follow')
   Route.delete('profiles/:user/follow', 'ProfileController.unfollow')
 
-  Route.get('articles/:article/comments', 'CommentController.index')
-  Route.post('articles/:article/comments', 'CommentController.store')
-  Route.delete('articles/:article/comments/:comment', 'CommentController.destroy')
+  Route.get('articles/:slug/comments', 'CommentController.index')
+  Route.post('articles/:slug/comments', 'CommentController.store').validator('StoreComment')
+  Route.delete('articles/:slug/comments/:comment', 'CommentController.destroy')
 }).middleware('auth')
+
+Route.get('articles/:slug', 'ArticleController.find')

@@ -1,5 +1,6 @@
 'use strict'
 
+const { sanitizor } = use('Validator')
 
 const ArticleHook = module.exports = {}
 
@@ -13,15 +14,7 @@ const ArticleHook = module.exports = {}
  * @return {void}
  */
 ArticleHook.slugify = async (articleInstance) => {
-  if (!articleInstance.slug) {
-    articleInstance.slug = articleInstance.title
-      .toString()
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w\-]+/g, "")
-      .replace(/\-\-+/g, "-")
-      .replace(/^-+/, "")
-      .replace(/-+$/, "");
+  if (!articleInstance.slug || articleInstance.title) {
+    articleInstance.slug = sanitizor.slug(articleInstance.title) + '_' + Math.random().toString(36).substr(2, 6);
   }
 }

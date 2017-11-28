@@ -1,11 +1,11 @@
 'use strict'
 
-const BaseModel = use('App/Models/BaseModel')
+const Model = use('Model')
 
-class User extends BaseModel {
+class User extends Model {
+
   static boot() {
     super.boot()
-
     /**
      * A hook to hash the user password before saving
      * it to the database.
@@ -13,11 +13,27 @@ class User extends BaseModel {
      * Look at `app/Models/Hooks/User.js` file to
      * check the hashPassword method
      */
-    this.addHook('beforeCreate', 'User.hashPassword')
+    this.addHook('beforeSave', 'User.hashPassword')
   }
 
   static get hidden() {
     return ['password']
+  }
+
+  static get createdAtColumn() {
+    return 'createdAt'
+  }
+
+  static get updatedAtColumn() {
+    return 'updatedAt'
+  }
+
+  static formatDates(field, value) {
+    return value
+  }
+
+  static castDates(field, value) {
+    return value
   }
 
   comments() {
@@ -30,6 +46,11 @@ class User extends BaseModel {
 
   following() {
     return this.belongsToMany('App/Models/User', 'follower_id', 'followed_id')
+      .pivotTable('follows')
+  }
+
+  followers() {
+    return this.belongsToMany('App/Models/User', 'followed_id', 'follower_id')
       .pivotTable('follows')
   }
 

@@ -2,21 +2,21 @@
 
 const User = use('App/Models/User')
 
-class FavoriteController {
+class UserController {
   async index({ auth }) {
-    const user = await auth.getUser()
+    const user = auth.user
     user.token = await auth.generate(user)
     return { user: user.toJSON() }
   }
 
   async update({ request, auth }) {
-    const user = await User.findOrFail(await auth.user.id)
-    const { email } = request.only('user').user
-    user.email = email
+    const user = auth.user
+    const {email, username, password, image, bio} = request.only('user').user
+    user.merge({email, username, password, image, bio})
     await user.save()
-    user.token = auth.generate(user)
-    return { user: user.toJSON() }
+    user.token = await auth.generate(user)
+    return {user: user.toJSON()}
   }
 }
 
-module.exports = FavoriteController
+module.exports = UserController
