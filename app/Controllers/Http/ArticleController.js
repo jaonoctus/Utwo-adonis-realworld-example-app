@@ -26,7 +26,7 @@ class ArticleController {
   }
 
   filterByQueryString(request, query) {
-    const queryParams = request.all()
+    const queryParams = request.get()
     for(const queryParam of Object.entries(queryParams)) {
       const methodName = uppercaseFirst(queryParam[0])
       const func = `filterBy${methodName}`
@@ -41,7 +41,7 @@ class ArticleController {
 
   async findArticleBySlug(slug) {
     const article = await Article.findByOrFail('slug', slug)
-    return {article: article.toJSON()}
+    return {article}
   }
 
   async store({ request, auth }) {
@@ -82,7 +82,7 @@ class ArticleController {
       return response.unauthorized({message: 'Can\'t delete this article'})
     }
     await article.delete()
-    return { article: article.toJSON() }
+    return { article }
   }
 }
 

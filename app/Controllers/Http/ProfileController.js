@@ -4,22 +4,22 @@ const User = use('App/Models/User')
 
 class ProfileController {
   async show({ params }) {
-    const user = await User.query().where('username', params.user).with('following').first()
-    return { profile: user.toJSON() }
+    const profile = await User.query().where('username', params.user).with('following').first()
+    return { profile }
   }
 
   async follow({ params, auth }) {
-    const user = await User.findByOrFail('username', params.user)
+    const profile = await User.findByOrFail('username', params.user)
     await auth.user.following().attach([user.id])
-    user.following = true
-    return { profile: user.toJSON() }
+    profile.following = true
+    return { profile }
   }
 
   async unfollow({ params, auth }) {
-    const user = await User.findByOrFail('username', params.user)
+    const profile = await User.findByOrFail('username', params.user)
     await auth.user.following().detach([user.id])
-    user.following = false
-    return { profile: user.toJSON() }
+    profile.following = false
+    return { profile }
   }
 }
 

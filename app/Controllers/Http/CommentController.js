@@ -7,7 +7,7 @@ class CommentController {
   async index({ params }) {
     const article = await Article.findByOrFail('slug', params.slug)
     const comments = await article.comments().with('author').orderBy('createdAt', 'desc').fetch()
-    return { comments: comments.toJSON() }
+    return { comments }
   }
 
   async store({ params, request, auth }) {
@@ -16,7 +16,7 @@ class CommentController {
     commentBody.user_id = auth.user.id
     const comment = await article.comments().create(commentBody)
     comment.author = auth.user
-    return { comment: comment.toJSON() }
+    return { comment }
   }
 
   async destroy({ params, auth, response }) {
@@ -25,7 +25,7 @@ class CommentController {
       return response.unauthorized({message: 'Can\'t delete this comment'})
     }
     await comment.delete()
-    return { comment: comment.toJSON() }
+    return { comment }
   }
 }
 

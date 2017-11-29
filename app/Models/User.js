@@ -17,7 +17,7 @@ class User extends Model {
   }
 
   static get hidden() {
-    return ['password']
+    return ['email', 'password']
   }
 
   static get createdAtColumn() {

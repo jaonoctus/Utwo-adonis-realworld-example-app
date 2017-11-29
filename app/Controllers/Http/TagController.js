@@ -4,8 +4,8 @@ const Tag = use('App/Models/Tag')
 
 class TagController {
   async index() {
-    const tag = await Tag.all()
-    return { tags: tag.toJSON() }
+    const tags = await Tag.all()
+    return { tags }
   }
 }
 
