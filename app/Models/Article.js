@@ -1,12 +1,11 @@
 'use strict'
-
 const Model = use('Model')
 
 class Article extends Model {
   static boot() {
     super.boot();
     this.addGlobalScope(builder => {
-      // builder.with('favorites');
+      builder.with('favorites');
       builder.with('tagList');
       builder.with('author');
       builder.withCount('favorites');
@@ -15,18 +14,15 @@ class Article extends Model {
   }
 
   static get computed() {
-    return ['favoritesCount', 'favorited']
+    return ['favoritesCount']
   }
 
   getFavoritesCount() {
     return this.$sideLoaded.favorites_count
   }
 
-  getFavorited() {
-    if (this.$relations.favorites) {
-      return !!this.$relations.favorites.rows.length;
-    }
-    return false
+  static get hidden() {
+    return ['favorites']
   }
 
   static get createdAtColumn() {
