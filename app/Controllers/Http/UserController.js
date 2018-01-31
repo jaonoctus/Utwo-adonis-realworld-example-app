@@ -12,12 +12,10 @@ class UserController {
 
   async update({ request, auth }) {
     let user = auth.user
-    const { email, username, password, image, bio } = request.only('user').user
-    user.merge({ email, username, password, image, bio })
+    const requestData = request.only(['user.username', 'user.password', 'user.email', 'user.image', 'user.bio']).user
+    user.merge(requestData)
     await user.save()
-    user.token = await auth.generate(user)
-    user = { email: user.email, ...user.toJSON() }
-    return { user }
+    return await this.index({auth})
   }
 }
 

@@ -6,6 +6,9 @@ class User extends Model {
 
   static boot() {
     super.boot()
+    /*this.addGlobalScope(builder => {
+      builder.with('followers');
+    })*/
     /**
      * A hook to hash the user password before saving
      * it to the database.
