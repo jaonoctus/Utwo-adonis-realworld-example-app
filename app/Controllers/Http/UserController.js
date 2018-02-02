@@ -2,14 +2,14 @@
 const {transformer} = require('../../Transformers/Transformer');
 
 class UserController {
-  async index({ auth }) {
+  async index({auth}) {
     let user = auth.user
     user.token = await auth.generate(user)
-    user = { email: user.email, ...user.toJSON() }
+    user = {email: user.email, ...user.toJSON()}
     return transformer({user}, auth.user.id)
   }
 
-  async update({ request, auth }) {
+  async update({request, auth}) {
     let user = auth.user
     const requestData = request.only(['user.username', 'user.password', 'user.email', 'user.image', 'user.bio']).user
     user.merge(requestData)
