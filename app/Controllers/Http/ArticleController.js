@@ -19,9 +19,6 @@ class ArticleController {
 
   transformResponse(articles) {
     const articleResponse = articles.toJSON()
-    if (articleResponse.data.length < 2) {
-      return {article: articleResponse.data}
-    }
     articleResponse.articles = articleResponse.data
     articleResponse.articlesCount = articleResponse.total
     delete articleResponse.data
@@ -39,13 +36,13 @@ class ArticleController {
     return query
   }
 
-  async find({params}) {
-    return this.findArticleBySlug(params.slug)
+  async find({params, auth}) {
+    return this.findArticleBySlug(params.slug, auth.user.id)
   }
 
-  async findArticleBySlug(slug) {
+  async findArticleBySlug(slug, user_id) {
     let article = await Article.findByOrFail('slug', slug)
-    return {article}
+    return transformer({article}, user_id)
   }
 
   async store({request, auth}) {
@@ -57,7 +54,7 @@ class ArticleController {
     if (tagList) {
       await this.createTagIfNotExist(tagList, article)
     }
-    return this.findArticleBySlug(article.slug)
+    return this.findArticleBySlug(article.slug, auth.user.id)
   }
 
   async createTagIfNotExist(tagList, article) {
@@ -77,7 +74,7 @@ class ArticleController {
     const {title, description, body} = request.only('article').article
     article.merge({title, description, body})
     await article.save()
-    return this.findArticleBySlug(article.slug)
+    return this.findArticleBySlug(article.slug, auth.user.id)
   }
 
   async destroy({params, auth, response}) {

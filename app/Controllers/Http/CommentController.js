@@ -9,7 +9,6 @@ class CommentController {
   async index({ params, auth }) {
     const article = await Article.findByOrFail('slug', params.slug)
     let comments = await article.comments().with('author').orderBy('createdAt', 'desc').fetch()
-    comments = comments.toJSON()
     return transformer({comments}, auth.user.id)
   }
 

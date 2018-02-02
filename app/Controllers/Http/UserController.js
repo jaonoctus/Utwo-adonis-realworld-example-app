@@ -1,13 +1,12 @@
 'use strict'
-
-const User = use('App/Models/User')
+const {transformer} = require('../../Transformers/Transformer');
 
 class UserController {
   async index({ auth }) {
     let user = auth.user
     user.token = await auth.generate(user)
     user = { email: user.email, ...user.toJSON() }
-    return { user }
+    return transformer({user}, auth.user.id)
   }
 
   async update({ request, auth }) {

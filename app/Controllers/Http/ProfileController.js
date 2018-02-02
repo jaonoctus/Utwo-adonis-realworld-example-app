@@ -1,13 +1,12 @@
 'use strict'
-const {profileTransform} = require('../../Transformers/ProfileTransformer')
+const {transformer} = require('../../Transformers/Transformer');
+
 const User = use('App/Models/User')
 
 class ProfileController {
   async show({ params, auth }) {
     let profile = await User.query().where('username', params.user).with('followers').first()
-    profile = profile.toJSON()
-    profile = profileTransform(profile, auth.user.id)
-    return { profile }
+    return transformer({ profile }, auth.user.id)
   }
 
   async follow({ params, auth }) {
