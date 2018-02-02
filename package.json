@@ -26,7 +26,8 @@
     "@adonisjs/lucid": "^4.0.22",
     "@adonisjs/validator": "^4.0.8",
     "mysql": "^2.15.0",
-    "pluralize": "^7.0.0"
+    "pluralize": "^7.0.0",
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
     "sqlite3": "^3.1.13"

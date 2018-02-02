@@ -19,7 +19,7 @@ const Route = use('Route')
 Route.post('users/login', 'AuthController.login')
 Route.post('users', 'AuthController.register').validator('StoreUser')
 
-Route.get('articles', 'ArticleController.index')
+Route.get('articles', 'ArticleController.index').middleware('optionalAuth')
 
 Route.get('tags', 'TagController.index')
 
@@ -45,4 +45,4 @@ Route.group(() => {
   Route.delete('articles/:slug/comments/:comment', 'CommentController.destroy')
 }).middleware('auth')
 
-Route.get('articles/:slug', 'ArticleController.find')
+Route.get('articles/:slug', 'ArticleController.find').middleware('optionalAuth')

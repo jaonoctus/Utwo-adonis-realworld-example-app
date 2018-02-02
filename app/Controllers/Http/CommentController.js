@@ -18,7 +18,7 @@ class CommentController {
     commentBody.user_id = auth.user.id
     const comment = await article.comments().create(commentBody)
     comment.author = auth.user
-    return {comment}
+    return transformer({comment}, auth.user.id)
   }
 
   async destroy({params, auth, response}) {
