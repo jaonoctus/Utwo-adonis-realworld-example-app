@@ -1,13 +1,16 @@
 'use strict'
 
+const {transformer} = require('../../Transformers/Transformer');
+
 const Comment = use('App/Models/Comment')
 const Article = use('App/Models/Article')
 
 class CommentController {
-  async index({ params }) {
+  async index({ params, auth }) {
     const article = await Article.findByOrFail('slug', params.slug)
-    const comments = await article.comments().with('author').orderBy('createdAt', 'desc').fetch()
-    return { comments }
+    let comments = await article.comments().with('author').orderBy('createdAt', 'desc').fetch()
+    comments = comments.toJSON()
+    return transformer({comments}, auth.user.id)
   }
 
   async store({ params, request, auth }) {

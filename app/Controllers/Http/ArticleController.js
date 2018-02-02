@@ -1,5 +1,6 @@
 'use strict'
 const {uppercaseFirst} = require('../../Helpers/string');
+const {transformer} = require('../../Transformers/Transformer');
 
 const Article = use('App/Models/Article')
 const Tag = use('App/Models/Tag')
@@ -8,33 +9,16 @@ class ArticleController {
   async index({request, auth}) {
     const articleQuery = this.filterByQueryString(request, Article.query())
     let articles = await articleQuery.orderBy('createdAt', 'desc').paginate()
-    articles = await articles.toJSON()
-    this.addFavoritedAttribute(articles.data, auth.user.id)
-    return this.transformResponse(articles)
+    return transformer(this.transformResponse(articles), auth.user.id)
   }
 
   async feed({auth}) {
     let articles = await Article.query().followersArticle(auth.user.id).orderBy('createdAt', 'desc').paginate()
-    articles = await articles.toJSON()
-    articles = this.addFavoritedAttribute(articles.data, auth.user.id)
-    return this.transformResponse(articles)
+    return transformer(this.transformResponse(articles), auth.user.id)
   }
 
-  addFavoritedAttribute(articles, user_id) {
-    articles.map(article => {
-      article.favorited = this.isFavoritedAttribute(article, user_id)
-      delete article.favorites
-    })
-    return articles
-  }
-
-  isFavoritedAttribute(article, user_id) {
-    return article.favorites.some((user) => {
-      return user.id === user_id
-    })
-  }
-
-  transformResponse(articleResponse) {
+  transformResponse(articles) {
+    const articleResponse = articles.toJSON()
     if (articleResponse.data.length < 2) {
       return {article: articleResponse.data}
     }

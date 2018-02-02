@@ -6,9 +6,9 @@ class User extends Model {
 
   static boot() {
     super.boot()
-    /*this.addGlobalScope(builder => {
+    this.addGlobalScope(builder => {
       builder.with('followers');
-    })*/
+    })
     /**
      * A hook to hash the user password before saving
      * it to the database.
@@ -20,7 +20,7 @@ class User extends Model {
   }
 
   static get hidden() {
-    return ['email', 'password']
+    return ['email', 'password', 'followers']
   }
 
   static get createdAtColumn() {
