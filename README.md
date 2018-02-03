@@ -19,7 +19,6 @@ git clone git@github.com
 
 Install dependencies
 ```bash
-npm i -g @adonisjs/cli
 npm install
 ```
 
@@ -30,22 +29,27 @@ cp .env.example .env
 
 Generate a new application key
 ```bash
-adonis key:generate
+node ace key:generate
 ```
 
 Run migration
 ```bash
-adonis migration:run
+node ace migration:run
 ```
 
 Start the local development server
 ```bash
-adonis run dev
+npm run dev
+```
+
+Run tests
+```bash
+npm test
 ```
 
   For more information run
 ```bash
-adonis --help
+node ace --help
 ```
 [adonisjs.com](http://adonisjs.com)
 
