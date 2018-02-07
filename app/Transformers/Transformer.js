@@ -30,6 +30,19 @@ function transformer(response, user_id) {
       const newKey = pluralize(this.key, item.length)
       changeKey.call(this, newKey, item, response);
     }
+
+    if (this.key === 'token' && this.parent.key === 'user') {
+      const newItem = item.token
+      addKey.call(this, 'token', newItem, response);
+    }
+
+    if (this.key === 'tagList') {
+      const tags = []
+      for(const tag of item) {
+        tags.push(tag.name)
+      }
+      addKey.call(this, 'tagList', tags, response);
+    }
   });
 
 }
@@ -39,6 +52,7 @@ function addKey(newKey, item, response) {
   for (const path of newPath) {
     response = response[path]
   }
+  console.log(response)
   response[newKey] = item
 }
 
