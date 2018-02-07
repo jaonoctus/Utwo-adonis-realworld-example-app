@@ -19,8 +19,6 @@ const Route = use('Route')
 Route.post('users/login', 'AuthController.login')
 Route.post('users', 'AuthController.register').validator('StoreUser')
 
-Route.get('articles', 'ArticleController.index').middleware('optionalAuth')
-
 Route.get('tags', 'TagController.index')
 
 Route.group(() => {
@@ -36,7 +34,6 @@ Route.group(() => {
   Route.get('user', 'UserController.index')
   Route.put('user', 'UserController.update').validator('UpdateUser')
 
-  Route.get('profiles/:user', 'ProfileController.show')
   Route.post('profiles/:user/follow', 'ProfileController.follow')
   Route.delete('profiles/:user/follow', 'ProfileController.unfollow')
 
@@ -45,4 +42,8 @@ Route.group(() => {
   Route.delete('articles/:slug/comments/:comment', 'CommentController.destroy')
 }).middleware('auth')
 
-Route.get('articles/:slug', 'ArticleController.find').middleware('optionalAuth')
+Route.group(() => {
+  Route.get('articles', 'ArticleController.index')
+  Route.get('profiles/:user', 'ProfileController.show')
+  Route.get('articles/:slug', 'ArticleController.find')
+}).middleware('optionalAuth')

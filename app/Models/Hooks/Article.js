@@ -14,7 +14,7 @@ const ArticleHook = module.exports = {}
  * @return {void}
  */
 ArticleHook.slugify = async (articleInstance) => {
-  if (!articleInstance.slug || articleInstance.title) {
+  if (articleInstance.title) {
     articleInstance.slug = sanitizor.slug(articleInstance.title) + '_' + Math.random().toString(36).substr(2, 6);
   }
 }

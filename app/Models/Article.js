@@ -7,7 +7,7 @@ class Article extends Model {
     this.addGlobalScope(builder => {
       builder.with('favorites');
       builder.with('tagList');
-      builder.with('author');
+      builder.with('author.followers');
       builder.withCount('favorites');
     })
     this.addHook('beforeSave', 'Article.slugify')

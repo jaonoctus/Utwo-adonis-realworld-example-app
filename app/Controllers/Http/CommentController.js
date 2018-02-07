@@ -8,7 +8,7 @@ const Article = use('App/Models/Article')
 class CommentController {
   async index({params, auth}) {
     const article = await Article.findByOrFail('slug', params.slug)
-    let comments = await article.comments().with('author').orderBy('createdAt', 'desc').fetch()
+    let comments = await article.comments().with('author.followers').orderBy('createdAt', 'desc').fetch()
     return transformer({comments}, auth.user.id)
   }
 

@@ -1,13 +1,13 @@
 const traverse = require('traverse')
-const pluralize = require('pluralize')
 
 function transformer(response, user_id) {
   return traverse(response).forEach(function (item) {
-    if(typeof item === 'object') {
+    if (typeof item === 'object') {
       try {
-        const newItem = item.toJSON()
-        this.update(newItem)
-      } catch (e) {}
+        item = item.toJSON()
+        this.update(item)
+      } catch (e) {
+      }
     }
     if (this.key === 'createdAt' || this.key === 'updatedAt') {
       this.block()
@@ -19,6 +19,7 @@ function transformer(response, user_id) {
         addKey.call(this, 'following', newItem, response);
       }
       this.delete()
+      this.block()
     }
 
     if (this.key === 'favorites') {
@@ -26,22 +27,17 @@ function transformer(response, user_id) {
       changeKey.call(this, 'favorited', newItem, response);
     }
 
-    if (this.key === 'comments' || this.key === 'articles') {
-      const newKey = pluralize(this.key, item.length)
-      changeKey.call(this, newKey, item, response);
-    }
-
     if (this.key === 'token' && this.parent.key === 'user') {
       const newItem = item.token
       addKey.call(this, 'token', newItem, response);
     }
 
-    if (this.key === 'tagList') {
+    if (this.key === 'tagList' || this.key === 'tags') {
       const tags = []
-      for(const tag of item) {
+      for (const tag of item) {
         tags.push(tag.name)
       }
-      addKey.call(this, 'tagList', tags, response);
+      changeKey.call(this, this.key, tags, response);
     }
   });
 
@@ -50,15 +46,16 @@ function transformer(response, user_id) {
 function addKey(newKey, item, response) {
   const newPath = this.path.slice(0, -1)
   for (const path of newPath) {
-    response = response[path]
+    if (response[path]) {
+      response = response[path]
+    }
   }
-  console.log(response)
   response[newKey] = item
 }
 
 function changeKey(newKey, item, response) {
   addKey.call(this, newKey, item, response)
-  if(newKey !== this.key) {
+  if (newKey !== this.key) {
     this.delete()
   }
 }
