@@ -4,26 +4,23 @@ const {transformer} = require('../../Transformers/Transformer');
 
 const Article = use('App/Models/Article')
 const Tag = use('App/Models/Tag')
+const Config = use('Config')
 
 class ArticleController {
   async index({request, auth}) {
+    const {offset = Config.get('app.page.offset'), limit = Config.get('app.page.limit')} = request.get()
     const articleQuery = this.filterByQueryString(request, Article.query())
-    let articles = await articleQuery.orderBy('createdAt', 'desc').paginate()
-    return transformer(this.transformResponse(articles), auth.user.id)
+    const articlesCount = await articleQuery.getCount('id')
+    const articles = await articleQuery.orderBy('createdAt', 'desc').offset(offset).limit(limit).fetch()
+    return transformer({articles, articlesCount}, auth.user.id)
   }
 
-  async feed({auth}) {
-    let articles = await Article.query().followersArticle(auth.user.id).orderBy('createdAt', 'desc').paginate()
-    return transformer(this.transformResponse(articles), auth.user.id)
-  }
-
-  transformResponse(articles) {
-    const articleResponse = articles.toJSON()
-    articleResponse.articles = articleResponse.data
-    articleResponse.articlesCount = articleResponse.total
-    delete articleResponse.data
-    delete articleResponse.total
-    return articleResponse
+  async feed({auth, request}) {
+    const {offset = Config.get('app.page.offset'), limit = Config.get('app.page.limit')} = request.get()
+    const articleQuery = Article.query().followersArticle(auth.user.id)
+    const articlesCount = await articleQuery.getCount('id')
+    const articles = await articleQuery.orderBy('createdAt', 'desc').offset(offset).limit(limit).fetch()
+    return transformer({articles, articlesCount}, auth.user.id)
   }
 
   filterByQueryString(request, query) {
@@ -31,7 +28,8 @@ class ArticleController {
     for (const queryParam of Object.entries(queryParams)) {
       const methodName = uppercaseFirst(queryParam[0])
       const func = `filterBy${methodName}`
-      query[func](queryParam[1])
+      if (typeof query[func] === 'function')
+        query[func](queryParam[1])
     }
     return query
   }
