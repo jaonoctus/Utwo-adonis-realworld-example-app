@@ -1,8 +1,12 @@
 'use strict'
 
-const BaseValidator = require('./BaseValidator')
+const CustomFormatter = require('./CustomFormatter')
 
-class StoreUser extends BaseValidator {
+class StoreUser {
+  get formatter () {
+    return CustomFormatter
+  }
+
   get rules () {
     return {
       email: 'required|email|unique:users',

@@ -3,11 +3,12 @@ class CustomFormatter {
     this.errors = {errors: {}}
   }
 
-  addError (error) {
-    if(this.errors.errors[error.field]) {
-      return this.errors.errors[error.field].push(error.message)
+  addError (error, field) {
+    console.log(error)
+    if(this.errors.errors[field]) {
+      return this.errors.errors[field].push(error)
     }
-    return this.errors.errors[error.field] = [error.message]
+    return this.errors.errors[field] = [error]
   }
 
   toJSON () {

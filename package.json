@@ -24,7 +24,7 @@
     "@adonisjs/framework": "^4.0.27",
     "@adonisjs/ignitor": "^1.0.14",
     "@adonisjs/lucid": "^6.1.1",
-    "@adonisjs/validator": "^4.0.8",
+    "@adonisjs/validator": "^5.0.3",
     "@adonisjs/vow": "^1.0.14",
     "mysql": "^2.15.0",
     "traverse": "^0.6.6"

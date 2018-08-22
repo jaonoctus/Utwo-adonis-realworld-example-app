@@ -1,8 +1,12 @@
 'use strict'
 
-const BaseValidator = require('./BaseValidator')
+const CustomFormatter = require('./CustomFormatter')
 
-class StoreComment extends BaseValidator {
+class StoreComment {
+  get formatter () {
+    return CustomFormatter
+  }
+
   get rules () {
     return {
       'body': 'required',

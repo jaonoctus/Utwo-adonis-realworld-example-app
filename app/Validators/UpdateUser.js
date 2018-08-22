@@ -1,8 +1,12 @@
 'use strict'
 
-const BaseValidator = require('./BaseValidator')
+const CustomFormatter = require('./CustomFormatter')
 
-class UpdateUser extends BaseValidator {
+class UpdateUser {
+  get formatter () {
+    return CustomFormatter
+  }
+
   get rules () {
     const userId = this.ctx.auth.user.id
 
