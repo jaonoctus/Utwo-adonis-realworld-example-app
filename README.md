@@ -29,7 +29,7 @@ cp .env.example .env
 
 Generate a new application key
 ```bash
-node ace key:generate
+npx adonis key:generate
 ```
 
 Run migration

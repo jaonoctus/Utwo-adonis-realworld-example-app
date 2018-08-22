@@ -23,14 +23,15 @@
     "@adonisjs/fold": "^4.0.5",
     "@adonisjs/framework": "^4.0.27",
     "@adonisjs/ignitor": "^1.0.14",
-    "@adonisjs/lucid": "^4.0.22",
+    "@adonisjs/lucid": "^6.1.1",
     "@adonisjs/validator": "^4.0.8",
     "@adonisjs/vow": "^1.0.14",
     "mysql": "^2.15.0",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "sqlite3": "^3.1.13"
+    "@adonisjs/cli": "^4.0.6",
+    "sqlite3": "^4.0.2"
   },
   "autoload": {
     "App": "./app"

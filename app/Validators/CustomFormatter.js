@@ -11,7 +11,7 @@ class CustomFormatter {
   }
 
   toJSON () {
-    return this.errors
+    return Object.keys(this.errors.errors).length !== 0 ? this.errors : null
   }
 }
 
