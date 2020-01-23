@@ -1,10 +1,12 @@
-const { test, trait } = use('Test/Suite')('User')
+'use strict'
+
+const { test, trait } = use('Test/Suite')('Login')
 const User = use('App/Models/User')
 
 trait('Test/ApiClient')
 
-test('login user', async ({ client }) => {
-  const newUser = await User.create({
+test('Should return a user with valid credentials', async ({ client }) => {
+  const user = await User.create({
     username: 'johnjacob',
     email: 'test@test.com',
     password: '123123'
@@ -12,7 +14,7 @@ test('login user', async ({ client }) => {
 
   const response = await client.post('/users/login').send({
     user: {
-      email: newUser.email,
+      email: user.email,
       password: '123123'
     }
   }).end()
@@ -20,8 +22,8 @@ test('login user', async ({ client }) => {
   response.assertStatus(200)
   response.assertJSONSubset({
     user: {
-      email: newUser.email,
-      username: newUser.username
+      email: user.email,
+      username: user.username
     }
   })
 })
